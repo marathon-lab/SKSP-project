@@ -6,6 +6,7 @@ import { api } from '../services/api'
 import { Button } from '../components/ui/Button'
 import { Input } from '../components/ui/Input'
 
+// Предустановленные дистанции для типовых целей подготовки
 const DISTANCES = [
   { value: 5, label: '5 км' },
   { value: 10, label: '10 км' },
@@ -42,6 +43,7 @@ export function GoalSetupPage() {
     formState: { errors, isSubmitting },
   } = useForm<FormData>({
     resolver: zodResolver(schema),
+    // По умолчанию предлагаем старт сегодня и горизонт подготовки примерно на 90 дней
     defaultValues: {
       distance: 10,
       startDate: new Date().toISOString().slice(0, 10),
@@ -51,6 +53,7 @@ export function GoalSetupPage() {
 
   const distance = watch('distance')
 
+  // После сохранения цели отдельно запускаем генерацию базового плана тренировок
   async function onSubmit(data: FormData) {
     setError('')
     try {
@@ -61,6 +64,7 @@ export function GoalSetupPage() {
         end_date: data.endDate,
       })
       await api.generatePlan()
+      // Используем sessionStorage как флаг для одноразового поведения после редиректа на dashboard
       sessionStorage.setItem('goalJustCreated', '1')
       window.location.replace('/dashboard')
     } catch (e) {
