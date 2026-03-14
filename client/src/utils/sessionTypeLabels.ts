@@ -1,5 +1,6 @@
 import type { TrainingSessionType } from '../types'
 
+// Таблица соответствия между типами тренировок и их отображаемыми названиями.
 export const SESSION_TYPE_LABELS: Record<TrainingSessionType, string> = {
   easy_run: 'Лёгкий бег',
   interval: 'Интервальная тренировка',
